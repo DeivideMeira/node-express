@@ -1,33 +1,21 @@
-const http = require('http')
-const server = http.createServer((req, res) => {
-let josé;
+const { readFile, writeFile } = require('fs').promises
+// const util = require('util')
+// const readFilePromise = util.promisify(readFile)
+// const writeFilePromise = util.promisify(writeFile)
 
-  if (req.url === '/') {
-    res.end(`
-    <h1>Welcome!</h1>
-    `)
-  } 
-  
-  else {
-    res.end()
+const start = async () => {
+  try {
+    const first = await readFile('./content/first.txt', 'utf8')
+    const second = await readFile('./content/second.txt', 'utf8')
+    await writeFile(
+      './content/result-mind-grenade.txt',
+      `Incrível! \n\nPrimeiro temos: ${first} \n\ne depois: ${second}`,
+      { flag: 'a' }
+    )
+    console.log(first, second)
+  } catch (error) {
+    console.log(error)
   }
-})
+}
 
-function generateBornDateFromAge(age) {
-  return 2016 - age;
- }
-  
-  
- function generateUserDescription(name, age) {
-  const Name = name;
-  const bornDate = generateBornDateFromAge(age);
-  
-  
-  return Name + " is " + age + " old and was born in " + bornDate;
- }
-  
-  
-let UserData = generateUserDescription("Waldemar", 26);
-console.log(UserData);
-
-server.listen(3000)
+start()
